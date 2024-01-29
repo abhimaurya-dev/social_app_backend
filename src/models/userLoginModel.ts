@@ -4,16 +4,24 @@ import ErrorHandler from "../utils/ErrorHandler";
 import { NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-interface IUserLogin extends Document {
+export interface IUserLogin extends Document {
+  _id: Schema.Types.ObjectId;
   email: string;
   password: string;
   refreshToken: string | null;
+  generateAuthToken(): { accessToken: string; refreshToken: string };
 }
 
 const userLoginSchema = new Schema<IUserLogin>({
+  _id: {
+    type: Schema.ObjectId,
+    required: true,
+    unique: true,
+  },
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -25,72 +33,60 @@ const userLoginSchema = new Schema<IUserLogin>({
   },
 });
 
-const model = mongoose.model<IUserLogin>("UserLogin", userLoginSchema);
+userLoginSchema.methods.generateAuthToken = async function () {
+  const accessToken: string = jwt.sign(
+    { _id: this._id },
+    process.env.JWT_ACCESS_TOKEN_SECRET || this.email,
+    { expiresIn: "30m" }
+  );
+  const refreshToken: string = jwt.sign(
+    { _id: this._id },
+    process.env.JWT_REFRESH_TOKEN_SECRET || this.email,
+    { expiresIn: "30m" }
+  );
+  this.refreshToken = refreshToken;
+  await this.save();
+  return { accessToken, refreshToken };
+};
 
-userLoginSchema.pre("save", async function () {
-  const generatedPasswordSalt: string = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, generatedPasswordSalt);
-});
+userLoginSchema.methods.canRefreshAuthToken = async function (
+  refreshToken: string,
+  next: NextFunction
+) {
+  const decodedId = jwt.verify(
+    refreshToken,
+    process.env.JWT_REFRESH_TOKEN_SECRET || this.email
+  );
+  if (decodedId !== this._id) {
+    return next(new ErrorHandler("Invalid token", 403));
+  }
+  if (refreshToken !== this.refreshToken) {
+    return next(new ErrorHandler("Invalid token", 403));
+  }
+  return true;
+};
 
-userLoginSchema.method("generateAuthToken", function () {
+userLoginSchema.methods.changePassword = async function (
+  currentPassword: string,
+  newPassword: string,
+  next: NextFunction
+) {
   try {
-    const accessToken: string = jwt.sign(
-      { _id: this._id },
-      process.env.JWT_ACCESS_TOKEN_SECRET || this.email,
-      { expiresIn: "30m" }
+    const currentPasswordVerified: boolean = await bcrypt.compare(
+      currentPassword,
+      this.password
     );
-    const refreshToken: string = jwt.sign(
-      { _id: this._id },
-      process.env.JWT_REFRESH_TOKEN_SECRET || this.email,
-      { expiresIn: "30m" }
-    );
-    this.refreshToken = refreshToken;
-    return { accessToken, refreshToken };
+    if (currentPasswordVerified) {
+      this.password = newPassword;
+      await this.save();
+    } else {
+      return next(new ErrorHandler("Password didn't match", 401));
+    }
   } catch (error) {
     console.log(error);
+    next(new ErrorHandler("Internal server error", 500));
   }
-});
+};
 
-userLoginSchema.method(
-  "canRefreshAuthToken",
-  async function (refreshToken: string, next: NextFunction) {
-    const decodedId = jwt.verify(
-      refreshToken,
-      process.env.JWT_REFRESH_TOKEN_SECRET || this.email
-    );
-    if (decodedId !== this._id) {
-      return next(new ErrorHandler("Invalid token", 403));
-    }
-    if (refreshToken !== this.refreshToken) {
-      return next(new ErrorHandler("Invalid token", 403));
-    }
-    return true;
-  }
-);
-
-userLoginSchema.method(
-  "changePassword",
-  async function (
-    currentPassword: string,
-    newPassword: string,
-    next: NextFunction
-  ) {
-    try {
-      const currentPasswordVerified: boolean = await bcrypt.compare(
-        currentPassword,
-        this.password
-      );
-      if (currentPasswordVerified) {
-        this.password = newPassword;
-        await this.save();
-      } else {
-        return next(new ErrorHandler("Password didn't match", 401));
-      }
-    } catch (error) {
-      console.log(error);
-      next(new ErrorHandler("Internal server error", 500));
-    }
-  }
-);
-
+const model = mongoose.model<IUserLogin>("UserLogin", userLoginSchema);
 export default model;
