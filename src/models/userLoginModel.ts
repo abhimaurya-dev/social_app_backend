@@ -25,10 +25,12 @@ const userLoginSchema = new Schema<IUserLogin>({
   },
   password: {
     type: String,
+    select: false,
     required: true,
   },
   refreshToken: {
     type: String,
+    select: false,
     default: null,
   },
 });
@@ -42,7 +44,7 @@ userLoginSchema.methods.generateAuthToken = async function () {
   const refreshToken: string = jwt.sign(
     { _id: this._id },
     process.env.JWT_REFRESH_TOKEN_SECRET || this.email,
-    { expiresIn: "30m" }
+    { expiresIn: "7d" }
   );
   this.refreshToken = refreshToken;
   await this.save();

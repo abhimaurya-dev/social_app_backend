@@ -37,10 +37,14 @@ export const signInController = async (
     const newUserLogin = new UserLoginModel(userLogin);
     await newUserLogin.save();
     const tokens = await newUserLogin.generateAuthToken();
+    res.cookie("jwt-refresh-token", tokens.refreshToken, {
+      httpOnly: true,
+      maxAge: 604800000,
+    });
     res.status(200).json({
       success: true,
       newUser,
-      tokens,
+      accessToken: tokens.accessToken,
     });
   } catch (error: any) {
     console.log(error);
