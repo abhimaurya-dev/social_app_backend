@@ -1,12 +1,17 @@
 import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
+import cors from "cors";
+
 import { dbConnect } from "./config/dbConfig";
 
 import userRoutes from "./routes/userRoutes";
 import { errorHandlerMiddleware } from "./middlewares/errorHandler/errorHandlerMiddleware";
+import cookieParser from "cookie-parser";
 
 const app: express.Application = express();
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors<Request>());
 
 dotenv.config({ path: "src/config.env" });
 

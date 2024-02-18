@@ -51,23 +51,6 @@ userLoginSchema.methods.generateAuthToken = async function () {
   return { accessToken, refreshToken };
 };
 
-userLoginSchema.methods.canRefreshAuthToken = async function (
-  refreshToken: string,
-  next: NextFunction
-) {
-  const decodedId = jwt.verify(
-    refreshToken,
-    process.env.JWT_REFRESH_TOKEN_SECRET || this.email
-  );
-  if (decodedId !== this._id) {
-    return next(new ErrorHandler("Invalid token", 403));
-  }
-  if (refreshToken !== this.refreshToken) {
-    return next(new ErrorHandler("Invalid token", 403));
-  }
-  return true;
-};
-
 userLoginSchema.methods.changePassword = async function (
   currentPassword: string,
   newPassword: string,
