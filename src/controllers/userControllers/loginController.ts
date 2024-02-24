@@ -41,6 +41,7 @@ export const loginController = async (
       success: true,
       user,
       accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
     });
   } catch (error) {
     console.log(error);
