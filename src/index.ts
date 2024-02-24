@@ -43,3 +43,5 @@ app.listen(process.env.PORT || 8000, () => {
   dbConnect();
   console.log(`Server is Running on Port ${process.env.PORT || 8000}`);
 });
+
+export default app;
