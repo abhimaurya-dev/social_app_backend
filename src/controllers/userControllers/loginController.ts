@@ -35,6 +35,7 @@ export const loginController = async (
     res.cookie("jwt-refresh-token", tokens.refreshToken, {
       httpOnly: true,
       maxAge: 604800000,
+      secure: true,
     });
     res.status(200).json({
       success: true,

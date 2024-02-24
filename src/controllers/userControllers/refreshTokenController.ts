@@ -16,15 +16,12 @@ export const refreshTokenController = async (
   }
   const decodedJwt = jwt.verify(
     refreshToken,
-    process.env.JWT_REFRESH_TOKEN_SECRET || user.email
+    process.env.JWT_REFRESH_TOKEN_SECRET as string
   ) as JwtPayload;
-  console.log(refreshToken);
-  console.log(user.refreshToken);
   if (decodedJwt._id !== String(user._id)) {
     return next(new ErrorHandler("Invalid token", 403));
   }
   if (refreshToken !== user.refreshToken) {
-    console.log("hii");
     return next(new ErrorHandler("Invalid token", 403));
   }
   const newAccessToken: string = jwt.sign(

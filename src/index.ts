@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import morgan from "morgan";
 
 import { dbConnect } from "./config/dbConfig";
 
@@ -9,9 +10,17 @@ import { errorHandlerMiddleware } from "./middlewares/errorHandler/errorHandlerM
 import cookieParser from "cookie-parser";
 
 const app: express.Application = express();
+
+const corsOptions = {
+  origin: ["http://localhost:5173"],
+  credentials: true,
+  allowedHeaders: ["content-type", "Authorization"],
+  optionSuccessStatus: 200,
+};
+app.use(morgan("common"));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors<Request>());
+app.use(cors<Request>(corsOptions));
 
 dotenv.config({ path: "src/config.env" });
 

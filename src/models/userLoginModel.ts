@@ -38,12 +38,12 @@ const userLoginSchema = new Schema<IUserLogin>({
 userLoginSchema.methods.generateAuthToken = async function () {
   const accessToken: string = jwt.sign(
     { _id: this._id },
-    process.env.JWT_ACCESS_TOKEN_SECRET || this.email,
+    process.env.JWT_ACCESS_TOKEN_SECRET as string,
     { expiresIn: "30m" }
   );
   const refreshToken: string = jwt.sign(
     { _id: this._id },
-    process.env.JWT_REFRESH_TOKEN_SECRET || this.email,
+    process.env.JWT_REFRESH_TOKEN_SECRET as string,
     { expiresIn: "7d" }
   );
   this.refreshToken = refreshToken;

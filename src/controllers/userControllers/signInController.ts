@@ -43,7 +43,7 @@ export const signInController = async (
     });
     res.status(200).json({
       success: true,
-      newUser,
+      user: newUser,
       accessToken: tokens.accessToken,
     });
   } catch (error: any) {
