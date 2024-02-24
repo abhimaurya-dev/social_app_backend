@@ -5,10 +5,17 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add dist",
     "serve": "nodemon dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ],
   "author": "abhimaurya-dev",
   "license": "ISC",
   "dependencies": {
@@ -36,6 +43,8 @@
     "@typescript-eslint/parser": "^6.19.1",
     "eslint": "^8.56.0",
     "nodemon": "^3.0.3",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
