@@ -15,12 +15,13 @@ const corsOptions = {
   origin: ["https://socialappfrontend.vercel.app", "http://localhost:5173"],
   credentials: true,
   allowedHeaders: ["content-type", "Authorization"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   optionSuccessStatus: 200,
 };
 app.use(morgan("common"));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors<Request>(corsOptions));
+app.use(cors(corsOptions));
 
 dotenv.config({ path: "src/config.env" });
 
