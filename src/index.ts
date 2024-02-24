@@ -12,7 +12,7 @@ import cookieParser from "cookie-parser";
 const app: express.Application = express();
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://socialappfrontend.vercel.app"],
+  origin: ["https://socialappfrontend.vercel.app", "http://localhost:5173"],
   credentials: true,
   allowedHeaders: ["content-type", "Authorization"],
   optionSuccessStatus: 200,
