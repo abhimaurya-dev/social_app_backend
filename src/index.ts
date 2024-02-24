@@ -39,7 +39,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) =>
   errorHandlerMiddleware(req, res, err, next)
 );
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 8000, () => {
   dbConnect();
   console.log(`Server is Running on Port ${process.env.PORT}`);
 });

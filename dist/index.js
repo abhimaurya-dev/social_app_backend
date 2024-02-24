@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/", userRoutes_1.default);
 // middlewares
 app.use((err, req, res, next) => (0, errorHandlerMiddleware_1.errorHandlerMiddleware)(req, res, err, next));
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 8000, () => {
     (0, dbConfig_1.dbConnect)();
     console.log(`Server is Running on Port ${process.env.PORT}`);
 });
