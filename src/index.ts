@@ -11,6 +11,8 @@ import cookieParser from "cookie-parser";
 
 const app: express.Application = express();
 
+app.use(morgan("common"));
+app.use(express.json());
 const corsOptions = {
   origin: ["https://socialappfrontend.vercel.app", "http://localhost:5173"],
   credentials: true,
@@ -23,8 +25,6 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 app.use(cors<Request>(corsOptions));
-app.use(morgan("common"));
-app.use(express.json());
 app.use(cookieParser());
 
 dotenv.config({ path: "src/config.env" });
