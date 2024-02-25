@@ -14,7 +14,7 @@ const app: express.Application = express();
 const corsOptions = {
   origin: ["https://socialappfrontend.vercel.app", "http://localhost:5173"],
   credentials: true,
-  allowedHeaders: "Content-Type, Authorization",
+  allowedHeaders: "Content-Type, Authorization, Access-Control-Allow-Origin",
   methods: ["GET", "POST", "PUT", "DELETE"],
   optionSuccessStatus: 200,
 };
