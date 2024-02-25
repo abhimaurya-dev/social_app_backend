@@ -22,9 +22,6 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE"],
   optionsSuccessStatus: 200,
 };
-app.use(morgan("common"));
-app.use(express.json());
-app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use((req, res, next) => {
   res.setHeader(
@@ -39,6 +36,9 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Credentials", "true");
   next();
 });
+app.use(morgan("common"));
+app.use(express.json());
+app.use(cookieParser());
 
 dotenv.config({ path: "src/config.env" });
 
