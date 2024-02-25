@@ -22,7 +22,7 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE"],
   optionsSuccessStatus: 200,
 };
-app.use(cors(corsOptions));
+app.use(cors<Request>(corsOptions));
 app.use(morgan("common"));
 app.use(express.json());
 app.use(cookieParser());
