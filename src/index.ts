@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
-import cors from "cors";
+// import cors from "cors";
 import morgan from "morgan";
 
 import { dbConnect } from "./config/dbConfig";
@@ -14,14 +14,24 @@ const app: express.Application = express();
 app.use(morgan("common"));
 app.use(express.json());
 app.use(cookieParser());
-const corsOptions = {
-  origin: ["https://socialappfrontend.vercel.app", "http://localhost:5173"],
-  credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  optionsSuccessStatus: 200,
-};
-app.use(cors<Request>(corsOptions));
+// const corsOptions = {
+//   origin: ["https://socialappfrontend.vercel.app", "http://localhost:5173"],
+//   credentials: true,
+//   allowedHeaders: ["Content-Type", "Authorization"],
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   optionsSuccessStatus: 200,
+// };
+// app.use(cors<Request>(corsOptions));
+app.use((req, res, next) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://socialappfrontend.vercel.app"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  next();
+});
 
 dotenv.config({ path: "src/config.env" });
 
