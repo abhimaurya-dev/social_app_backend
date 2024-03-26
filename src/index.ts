@@ -2,16 +2,12 @@ import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors, { CorsOptions } from "cors";
 import morgan from "morgan";
-
-// import { dbConnect } from "./config/dbConfig";
-
-import { db } from "./controllers/userControllers/constants/constant";
-
 import userRoutes from "./routes/userRoutes";
 import { errorHandlerMiddleware } from "./middlewares/errorHandler/errorHandlerMiddleware";
 import cookieParser from "cookie-parser";
 import logger from "./utils/logger";
-import mongoose from "mongoose";
+
+import { dbConnect } from "./config/dbConfig";
 
 const app: express.Application = express();
 
@@ -32,17 +28,18 @@ const corsOptions: CorsOptions = {
 app.use(cors(corsOptions));
 
 dotenv.config({ path: "src/config.env" });
-const DB_URI: string | undefined = process.env.MONGO_DB_URI as string;
-mongoose
-  .connect(DB_URI)
-  .then(() => {
-    db.isConnected = true;
-    logger.info("DB is connected");
-  })
-  .catch((e) => {
-    db.isConnected = e;
-    logger.error(e);
-  });
+
+dbConnect();
+
+// const DB_URI: string | undefined = process.env.MONGO_DB_URI as string;
+// mongoose
+//   .connect(DB_URI)
+//   .then(() => {
+//     logger.info("DB is connected");
+//   })
+//   .catch((e) => {
+//     logger.error(e);
+//   });
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({

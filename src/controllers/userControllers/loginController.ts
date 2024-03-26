@@ -3,15 +3,12 @@ import bcrypt from "bcryptjs";
 import UserLoginModel from "../../models/userLoginModel";
 import UserModel from "../../models/userModel";
 import ErrorHandler from "../../utils/ErrorHandler";
-import { db } from "./constants/constant";
 
 export const loginController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  console.log("invoking login");
-  console.log(db.isConnected);
   if (!req.body.email || !req.body.password) {
     return next(new ErrorHandler("Invalid email or password", 401));
   }
