@@ -5,6 +5,8 @@ import morgan from "morgan";
 
 // import { dbConnect } from "./config/dbConfig";
 
+import { db } from "./controllers/userControllers/constants/constant";
+
 import userRoutes from "./routes/userRoutes";
 import { errorHandlerMiddleware } from "./middlewares/errorHandler/errorHandlerMiddleware";
 import cookieParser from "cookie-parser";
@@ -54,6 +56,7 @@ app.listen(process.env.PORT || 8000, () => {
   mongoose
     .connect(DB_URI)
     .then(() => {
+      db.isConnected = true;
       logger.info("DB is connected");
     })
     .catch((e) => {
