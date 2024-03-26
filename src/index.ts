@@ -29,6 +29,9 @@ app.use(cors(corsOptions));
 
 dotenv.config({ path: "src/config.env" });
 
+// DB Connection
+dbConnect();
+
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
@@ -45,7 +48,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) =>
 );
 
 app.listen(process.env.PORT || 8000, () => {
-  dbConnect();
   console.log(`Server is Running on Port ${process.env.PORT || 8000}`);
 });
 
