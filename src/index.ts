@@ -15,20 +15,13 @@ app.use(morgan("common"));
 app.use(express.json());
 app.use(cookieParser());
 const corsOptions = {
-  origin: ["https://www.socialappfrontend.vercel.app", "http://localhost:5173"],
+  origin: ["https://socialappfrontend.vercel.app", "http://localhost:5173"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   optionsSuccessStatus: 200,
 };
 app.use(cors<Request>(corsOptions));
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
-//   res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
-//   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-//   res.setHeader("Access-Control-Allow-Credentials", "true");
-//   next();
-// });
 
 dotenv.config({ path: "src/config.env" });
 
