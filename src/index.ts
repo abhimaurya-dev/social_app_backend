@@ -21,7 +21,7 @@ const corsOptions: CorsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE"],
   optionsSuccessStatus: 200,
 };
-app.use(cors<Request>(corsOptions));
+app.use(cors(corsOptions));
 
 dotenv.config({ path: "src/config.env" });
 
