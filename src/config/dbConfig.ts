@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import logger from "../utils/logger";
+import ErrorHandler from "../utils/ErrorHandler";
 
 export const dbConnect = () => {
   const DB_URI: string | undefined = process.env.MONGO_DB_URI;
@@ -12,6 +13,7 @@ export const dbConnect = () => {
       logger.info("DB is connected");
     })
     .catch((e) => {
-      logger.info(e);
+      console.log(e);
+      return new ErrorHandler("DB not connected", 500);
     });
 };
