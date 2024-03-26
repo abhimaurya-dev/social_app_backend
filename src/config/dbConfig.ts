@@ -12,7 +12,6 @@ export const dbConnect = () => {
       logger.info("DB is connected");
     })
     .catch((e) => {
-      console.log(e);
-      throw new Error("DB not connected");
+      logger.error(e);
     });
 };

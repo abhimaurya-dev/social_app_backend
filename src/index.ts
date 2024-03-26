@@ -30,8 +30,6 @@ app.use(cors(corsOptions));
 
 dotenv.config({ path: "src/config.env" });
 
-// DB Connection
-
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
@@ -47,8 +45,8 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) =>
   errorHandlerMiddleware(req, res, err, next)
 );
 
-app.listen(process.env.PORT || 8000, () => {
-  dbConnect();
+app.listen(process.env.PORT || 8000, async () => {
+  await dbConnect();
   logger.info(`Server is Running on Port ${process.env.PORT || 8000}`);
 });
 
