@@ -60,6 +60,7 @@ app.listen(process.env.PORT || 8000, () => {
       logger.info("DB is connected");
     })
     .catch((e) => {
+      db.isConnected = e;
       logger.error(e);
     });
   logger.info(`Server is Running on Port ${process.env.PORT || 8000}`);
