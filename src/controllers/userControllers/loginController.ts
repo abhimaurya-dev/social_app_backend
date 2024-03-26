@@ -44,6 +44,7 @@ export const loginController = async (
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
     });
+    console.log("login ended");
   } catch (error) {
     console.log(error);
     next(new ErrorHandler("Internal server error", 500));
