@@ -32,6 +32,17 @@ const corsOptions: CorsOptions = {
 app.use(cors(corsOptions));
 
 dotenv.config({ path: "src/config.env" });
+const DB_URI: string | undefined = process.env.MONGO_DB_URI as string;
+mongoose
+  .connect(DB_URI)
+  .then(() => {
+    db.isConnected = true;
+    logger.info("DB is connected");
+  })
+  .catch((e) => {
+    db.isConnected = e;
+    logger.error(e);
+  });
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
@@ -49,20 +60,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) =>
 );
 
 app.listen(process.env.PORT || 8000, () => {
-  const DB_URI: string | undefined = process.env.MONGO_DB_URI;
-  if (!DB_URI) {
-    return console.log("DB_URI is not available");
-  }
-  mongoose
-    .connect(DB_URI)
-    .then(() => {
-      db.isConnected = true;
-      logger.info("DB is connected");
-    })
-    .catch((e) => {
-      db.isConnected = e;
-      logger.error(e);
-    });
   logger.info(`Server is Running on Port ${process.env.PORT || 8000}`);
 });
 
