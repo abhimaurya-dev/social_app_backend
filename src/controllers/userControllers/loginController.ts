@@ -15,6 +15,10 @@ export const loginController = async (
   }
   const email: string = req.body.email;
   const password: string = req.body.password;
+  console.log({
+    email: email,
+    password: password,
+  });
   try {
     const userLogin = await UserLoginModel.findOne({ email }).select(
       "+password"
