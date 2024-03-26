@@ -10,6 +10,8 @@ export const loginController = async (
   next: NextFunction
 ) => {
   console.log("invoking login");
+  const db_uri = process.env.MONGO_DB_URI;
+  console.log(db_uri);
   if (!req.body.email || !req.body.password) {
     return next(new ErrorHandler("Invalid email or password", 401));
   }
