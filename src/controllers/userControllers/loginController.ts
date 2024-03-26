@@ -16,10 +16,10 @@ export const loginController = async (
   const email: string = req.body.email;
   const password: string = req.body.password;
   try {
-    console.log("getting user login");
     const userLogin = await UserLoginModel.findOne({ email }).select(
       "+password"
     );
+    console.log(userLogin);
     const user = await UserModel.findOne({ email });
     if (!userLogin) {
       return next(new ErrorHandler("User not found", 404));
