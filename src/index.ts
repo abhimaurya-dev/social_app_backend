@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 import morgan from "morgan";
 
 import { dbConnect } from "./config/dbConfig";
@@ -14,7 +14,7 @@ const app: express.Application = express();
 app.use(morgan("common"));
 app.use(express.json());
 app.use(cookieParser());
-const corsOptions = {
+const corsOptions: CorsOptions = {
   origin: ["https://socialappfrontend.vercel.app", "http://localhost:5173"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
