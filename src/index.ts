@@ -8,6 +8,7 @@ import { dbConnect } from "./config/dbConfig";
 import userRoutes from "./routes/userRoutes";
 import { errorHandlerMiddleware } from "./middlewares/errorHandler/errorHandlerMiddleware";
 import cookieParser from "cookie-parser";
+import logger from "./utils/logger";
 
 const app: express.Application = express();
 
@@ -30,7 +31,6 @@ app.use(cors(corsOptions));
 dotenv.config({ path: "src/config.env" });
 
 // DB Connection
-dbConnect();
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
@@ -48,7 +48,8 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) =>
 );
 
 app.listen(process.env.PORT || 8000, () => {
-  console.log(`Server is Running on Port ${process.env.PORT || 8000}`);
+  dbConnect();
+  logger.info(`Server is Running on Port ${process.env.PORT || 8000}`);
 });
 
 export default app;

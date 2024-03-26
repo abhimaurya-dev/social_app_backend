@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import logger from "../utils/logger";
 
 export const dbConnect = () => {
   const DB_URI: string | undefined = process.env.MONGO_DB_URI;
@@ -8,9 +9,9 @@ export const dbConnect = () => {
   mongoose
     .connect(DB_URI)
     .then(() => {
-      console.log("DB is connected");
+      logger.info("DB is connected");
     })
     .catch((e) => {
-      console.log(e);
+      logger.info(e);
     });
 };
