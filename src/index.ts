@@ -4,7 +4,6 @@ import cors, { CorsOptions } from "cors";
 import morgan from "morgan";
 
 import { dbConnect } from "./config/dbConfig";
-import UserModel from "./models/userModel";
 
 import userRoutes from "./routes/userRoutes";
 import { errorHandlerMiddleware } from "./middlewares/errorHandler/errorHandlerMiddleware";
@@ -33,10 +32,8 @@ dotenv.config({ path: "src/config.env" });
 
 // DB Connection
 
-app.get("/", async (req: Request, res: Response) => {
-  const user = await UserModel.find();
+app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
-    user,
     success: true,
     message: "Welcome to Social Server",
   });
