@@ -15,7 +15,11 @@ app.use(morgan("common"));
 app.use(express.json());
 app.use(cookieParser());
 const corsOptions: CorsOptions = {
-  origin: ["https://socialappfrontend.vercel.app", "http://localhost:5173"],
+  origin: [
+    "https://socialappfrontend.vercel.app",
+    "https://www.socialappfrontend.vercel.app",
+    "http://localhost:5173",
+  ],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
   methods: ["GET", "POST", "PUT", "DELETE"],
