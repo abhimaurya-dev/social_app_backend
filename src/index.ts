@@ -3,12 +3,13 @@ import dotenv from "dotenv";
 import cors, { CorsOptions } from "cors";
 import morgan from "morgan";
 
-import { dbConnect } from "./config/dbConfig";
+// import { dbConnect } from "./config/dbConfig";
 
 import userRoutes from "./routes/userRoutes";
 import { errorHandlerMiddleware } from "./middlewares/errorHandler/errorHandlerMiddleware";
 import cookieParser from "cookie-parser";
 import logger from "./utils/logger";
+import mongoose from "mongoose";
 
 const app: express.Application = express();
 
@@ -45,8 +46,19 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) =>
   errorHandlerMiddleware(req, res, err, next)
 );
 
-app.listen(process.env.PORT || 8000, async () => {
-  await dbConnect();
+app.listen(process.env.PORT || 8000, () => {
+  const DB_URI: string | undefined = process.env.MONGO_DB_URI;
+  if (!DB_URI) {
+    return console.log("DB_URI is not available");
+  }
+  mongoose
+    .connect(DB_URI)
+    .then(() => {
+      logger.info("DB is connected");
+    })
+    .catch((e) => {
+      logger.error(e);
+    });
   logger.info(`Server is Running on Port ${process.env.PORT || 8000}`);
 });
 
