@@ -9,6 +9,7 @@ export const loginController = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log("invoking login");
   if (!req.body.email || !req.body.password) {
     return next(new ErrorHandler("Invalid email or password", 401));
   }
