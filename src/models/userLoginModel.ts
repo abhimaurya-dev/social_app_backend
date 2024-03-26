@@ -10,6 +10,11 @@ export interface IUserLogin extends Document {
   password: string;
   refreshToken: string | null;
   generateAuthToken(): { accessToken: string; refreshToken: string };
+  changePassword(
+    currentPassword: string,
+    newPassword: string,
+    next: NextFunction
+  ): Promise<void>;
 }
 
 const userLoginSchema = new Schema<IUserLogin>({
