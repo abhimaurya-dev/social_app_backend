@@ -21,7 +21,7 @@ const corsOptions: CorsOptions = {
     "http://localhost:5173",
   ],
   credentials: true,
-  allowedHeaders: "*",
+  allowedHeaders: ["Content-type", "Accept", "Authorization"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   optionsSuccessStatus: 200,
 };
